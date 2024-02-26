@@ -2,15 +2,26 @@ import styles from './Product.module.scss';
 import clsx from 'clsx';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-const Product = ({basePrice, title}) => {
+const Product = ({basePrice, title, name, colors, sizes}) => {
+
+  const [currentColor, setCurrentColor] = useState(colors[0]);
+  const [currentSize, setCurrentSize] = useState(sizes.map(size => size === 'S'));
+
+  const selectedSize = (size) => {
+    if(size !== currentSize){
+      setCurrentSize(size);
+    }
+  }
+  
   return (
     <article className={styles.product}>
       <div className={styles.imageContainer}>
         <img 
           className={styles.image}
-          alt={title}
-          src={`${process.env.PUBLIC_URL}/images/products/shirt-kodilla--black.jpg`} />
+          alt={name}
+          src={`${process.env.PUBLIC_URL}/images/products/shirt-${name}--${currentColor}.jpg`} />
       </div>
       <div>
         <header>
@@ -21,10 +32,13 @@ const Product = ({basePrice, title}) => {
           <div className={styles.sizes}>
             <h3 className={styles.optionLabel}>Sizes</h3>
             <ul className={styles.choices}>
-              <li><button type="button" className={styles.active}>S</button></li>
-              <li><button type="button">M</button></li>
-              <li><button type="button">L</button></li>
-              <li><button type="button">XL</button></li>
+              {sizes.map((size) => 
+                <li key={size.name}><button 
+                  type="button" 
+                  className={clsx(size.name === currentSize && styles.active)} 
+                  onClick={() => selectedSize(size.name)}>
+                  {size.name}
+                </button></li>)}
             </ul>
           </div>
           <div className={styles.colors}>
