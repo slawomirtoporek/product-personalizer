@@ -13,7 +13,17 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
     if(size !== currentSize){
       setCurrentSize(size);
     }
-  }
+  };
+
+  const selectedColor = (color) => {
+    if(color !== currentColor){
+      setCurrentColor(color);
+    }
+  };
+
+  const prepareColorClassName = color => {
+    return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
+  };
   
   return (
     <article className={styles.product}>
@@ -44,9 +54,12 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
           <div className={styles.colors}>
             <h3 className={styles.optionLabel}>Colors</h3>
             <ul className={styles.choices}>
-              <li><button type="button" className={clsx(styles.colorBlack, styles.active)} /></li>
-              <li><button type="button" className={clsx(styles.colorRed)} /></li>
-              <li><button type="button" className={clsx(styles.colorWhite)} /></li>
+              {colors.map(color => 
+                <li key={color}><button 
+                type="button" 
+                className={clsx(prepareColorClassName(color), color === currentColor && styles.active)} 
+                onClick={() => selectedColor(color)} />
+              </li>)}
             </ul>
           </div>
           <Button className={styles.button}>
