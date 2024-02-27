@@ -7,7 +7,8 @@ import { useState } from 'react';
 const Product = ({basePrice, title, name, colors, sizes}) => {
 
   const [currentColor, setCurrentColor] = useState(colors[0]);
-  const [currentSize, setCurrentSize] = useState(sizes.map(size => size === 'S'));
+  const [currentSize, setCurrentSize] = useState(sizes[0].name);
+  const [currentPrice, setCurrentPrice] = useState(sizes[0].additionalPrice);
 
   const selectedSize = (size) => {
     if(size !== currentSize){
@@ -24,6 +25,11 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
   const prepareColorClassName = color => {
     return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
   };
+
+  const getPrice = () => {
+    const findPrice = sizes.find((size) => size.name === currentSize);
+    return basePrice + findPrice.additionalPrice;
+  };
   
   return (
     <article className={styles.product}>
@@ -36,7 +42,7 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
       <div>
         <header>
           <h2 className={styles.name}>{title}</h2>
-          <span className={styles.price}>Price: {basePrice}</span>
+          <span className={styles.price}>Price: {getPrice()}</span>
         </header>
         <form>
           <div className={styles.sizes}>
