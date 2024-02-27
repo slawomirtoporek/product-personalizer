@@ -30,6 +30,16 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
     const findPrice = sizes.find((size) => size.name === currentSize);
     return basePrice + findPrice.additionalPrice;
   };
+
+  const cartSummary = e => {
+    e.preventDefault();
+    console.log('Summary');
+    console.log('============');
+    console.log('Name:', title);
+    console.log('Price:', getPrice());
+    console.log('Size:', currentSize);
+    console.log('Color:', currentColor);
+  };
   
   return (
     <article className={styles.product}>
@@ -69,7 +79,7 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
             </ul>
           </div>
           <Button className={styles.button}>
-            <span className="fa fa-shopping-cart" />
+            <span className="fa fa-shopping-cart" onClick={(e) => cartSummary(e)} />
           </Button>
         </form>
       </div>
