@@ -1,11 +1,10 @@
-import styles from './Product.module.scss';
-import clsx from 'clsx';
-import Button from '../Button/Button';
 import ProductImage from '../ProductImage/ProductImage';
-import PropTypes from 'prop-types';
+import ProductForm from '../ProductForm/ProductForm';
+import styles from './Product.module.scss';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const Product = ({basePrice, title, name, colors, sizes}) => {
+const Product = ({basePrice, title, name, colors, sizes, onSubmit}) => {
 
   const [currentColor, setCurrentColor] = useState(colors[0]);
   const [currentSize, setCurrentSize] = useState(sizes[0].name);
@@ -20,10 +19,6 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
     if(color !== currentColor){
       setCurrentColor(color);
     }
-  };
-
-  const prepareColorClassName = color => {
-    return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
   };
 
   const getPrice = () => {
@@ -49,34 +44,9 @@ const Product = ({basePrice, title, name, colors, sizes}) => {
           <h2 className={styles.name}>{title}</h2>
           <span className={styles.price}>Price: {getPrice()}</span>
         </header>
-        <form>
-          <div className={styles.sizes}>
-            <h3 className={styles.optionLabel}>Sizes</h3>
-            <ul className={styles.choices}>
-              {sizes.map((size) => 
-                <li key={size.name}><button 
-                  type="button" 
-                  className={clsx(size.name === currentSize && styles.active)} 
-                  onClick={() => selectedSize(size.name)}>
-                  {size.name}
-                </button></li>)}
-            </ul>
-          </div>
-          <div className={styles.colors}>
-            <h3 className={styles.optionLabel}>Colors</h3>
-            <ul className={styles.choices}>
-              {colors.map(color => 
-                <li key={color}><button 
-                type="button" 
-                className={clsx(prepareColorClassName(color), color === currentColor && styles.active)} 
-                onClick={() => selectedColor(color)} />
-              </li>)}
-            </ul>
-          </div>
-          <Button className={styles.button}>
-            <span className="fa fa-shopping-cart" onClick={(e) => cartSummary(e)} />
-          </Button>
-        </form>
+        <ProductForm  onSubmit={onSubmit} sizes={sizes} currentSize={currentSize} selectedSize={selectedSize} 
+          colors={colors} selectedColor={selectedColor} 
+          currentColor={currentColor} cartSummary={cartSummary} />
       </div>
     </article>
   )
