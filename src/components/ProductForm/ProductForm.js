@@ -2,6 +2,7 @@ import OptionSize from '../OptionSize/OptionSize';
 import OptionColor from '../OptionColor/OptionColor';
 import Button from '../Button/Button';
 import styles from '../Button/Button.module.scss';
+import PropTypes from 'prop-types';
 
 
 const ProductForm = ({sizes, currentSize, selectedSize, colors, selectedColor, currentColor, cartSummary}) => {
@@ -15,6 +16,16 @@ const ProductForm = ({sizes, currentSize, selectedSize, colors, selectedColor, c
       </Button>
     </form>
   );
+};
+
+ProductForm.propTypes = {
+  sizes: PropTypes.array.isRequired,
+  currentSize: PropTypes.string.isRequired,
+  selectedSize: PropTypes.func.isRequired,
+  colors: PropTypes.array.isRequired,
+  selectedColor: PropTypes.func.isRequired,
+  currentColor: PropTypes.string.isRequired,
+  cartSummary: PropTypes.func.isRequired
 };
 
 export default ProductForm;
