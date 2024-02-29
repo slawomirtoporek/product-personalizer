@@ -1,7 +1,7 @@
 import ProductImage from '../ProductImage/ProductImage';
 import ProductForm from '../ProductForm/ProductForm';
 import styles from './Product.module.scss';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 const Product = ({basePrice, title, name, colors, sizes, onSubmit}) => {
@@ -21,17 +21,17 @@ const Product = ({basePrice, title, name, colors, sizes, onSubmit}) => {
     }
   };
 
-  const getPrice = () => {
+  const price = useMemo(() => {
     const findPrice = sizes.find((size) => size.name === currentSize);
     return basePrice + findPrice.additionalPrice;
-  };
+  }, [sizes, currentSize, basePrice]);
 
   const cartSummary = e => {
     e.preventDefault();
     console.log('Summary');
     console.log('============');
     console.log('Name:', title);
-    console.log('Price:', getPrice());
+    console.log('Price:', price);
     console.log('Size:', currentSize);
     console.log('Color:', currentColor);
   };
@@ -42,7 +42,7 @@ const Product = ({basePrice, title, name, colors, sizes, onSubmit}) => {
       <div>
         <header>
           <h2 className={styles.name}>{title}</h2>
-          <span className={styles.price}>Price: {getPrice()}</span>
+          <span className={styles.price}>Price: {price}</span>
         </header>
         <ProductForm  onSubmit={onSubmit} sizes={sizes} currentSize={currentSize} selectedSize={selectedSize} 
           colors={colors} selectedColor={selectedColor} 
